@@ -31,7 +31,7 @@ impl Default for App {
 
 // start run app
 pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<()> {
-    let zsh_history_filename = "./test/.zsh_history";
+    let zsh_history_filename = "/root/.zsh_history";
 
     let history = fs::read_to_string(zsh_history_filename)?;
 
