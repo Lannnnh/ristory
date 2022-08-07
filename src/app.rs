@@ -43,6 +43,7 @@ pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Res
     loop {
         let hisroty_commands: Vec<&str> = history
             .lines()
+            .rev()
             .filter(|line_content| input_str.is_empty() || line_content.contains(&input_str))
             .map(|line_content| {
                 let line_command = line_content.split(";").last().unwrap();
