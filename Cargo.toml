@@ -1,0 +1,10 @@
+[package]
+name = "ristory"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tui = { version = "0.14", default-features = false, features = ['crossterm', 'serde'] }
+crossterm = { version = "0.23", features = [ "serde" ] }
