@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("{:?}", err)
     }
 
-    println!("{}", app.selected_cmd);
+    eprintln!("{}", app.selected_cmd);
 
     Ok(())
 }
