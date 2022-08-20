@@ -85,6 +85,7 @@ pub fn ui<B: Backend>(
         InputMode::Normal => {}
 
         InputMode::Editing => {
+            history_state.select(Some(0));
             f.set_cursor(chunks[1].x + app.input.len() as u16 + 1, chunks[1].y + 1)
         }
     }

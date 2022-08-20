@@ -85,7 +85,7 @@ pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Res
                     KeyCode::Enter => {
                         let selected_command = hisroty_commands
                             .get(history_state.selected().unwrap())
-                            .unwrap();
+                            .unwrap_or(&"");
 
                         app.selected_cmd.push_str(selected_command);
 
@@ -104,7 +104,6 @@ pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Res
                     }
                     KeyCode::Enter => {
                         app.input_mode = InputMode::Normal;
-                        history_state.select(Some(0));
                         input_str = app.input.to_owned();
                         app.input.clear();
                     }
