@@ -2,7 +2,7 @@
 name = "ristory"
 version = "0.1.0"
 edition = "2021"
-authors = ["Lan4h"]
+authors = ["Lan4h <15997426361@sina.cn>"]
 description = "A tool for finding history zsh commands."
 license = "MIT"
 
