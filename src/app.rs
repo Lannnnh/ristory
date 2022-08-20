@@ -1,7 +1,7 @@
 use crate::ui::ui;
 
 use crossterm::event::{self, Event, KeyCode};
-use std::{fs, io};
+use std::{env, fs, io};
 use tui::{backend::Backend, widgets::ListState, Terminal};
 
 pub enum InputMode {
@@ -31,7 +31,7 @@ impl Default for App {
 
 // start run app
 pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<()> {
-    let zsh_history_filename = "/root/.zsh_history";
+    let zsh_history_filename = env::var("HISTFILE").unwrap_or("/root/.zsh_history".to_string());
 
     let history = fs::read_to_string(zsh_history_filename)?;
 
