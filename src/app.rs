@@ -1,8 +1,13 @@
 use crate::ui::ui;
 
 use crossterm::event::{self, Event, KeyCode};
-use std::{env, fs, io};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::{env, io};
 use tui::{backend::Backend, widgets::ListState, Terminal};
+
+use encoding_rs::WINDOWS_1252;
+use encoding_rs_io::DecodeReaderBytesBuilder;
 
 pub enum InputMode {
     Normal,
@@ -33,7 +38,15 @@ impl Default for App {
 pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<()> {
     let zsh_history_filename = env::var("HISTFILE").unwrap_or("/root/.zsh_history".to_string());
 
-    let history = fs::read_to_string(zsh_history_filename)?;
+    let history_file = File::open(zsh_history_filename)?;
+    let history: Vec<String> = BufReader::new(
+        DecodeReaderBytesBuilder::new()
+            .encoding(Some(WINDOWS_1252))
+            .build(history_file),
+    )
+    .lines()
+    .map(|h| h.unwrap())
+    .collect();
 
     let mut history_state = ListState::default();
     history_state.select(Some(0));
@@ -42,7 +55,7 @@ pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Res
 
     loop {
         let hisroty_commands: Vec<&str> = history
-            .lines()
+            .iter()
             .rev()
             .filter(|line_content| input_str.is_empty() || line_content.contains(&input_str))
             .map(|line_content| {
