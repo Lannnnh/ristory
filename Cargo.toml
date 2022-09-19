@@ -1,6 +1,6 @@
 [package]
 name = "ristory"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 authors = ["Lan4h <15997426361@sina.cn>"]
 description = "A tool for finding history zsh commands."
@@ -9,7 +9,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tui = { version = "0.14", default-features = false, features = [
+tui = { version = "0.19", default-features = false, features = [
     'crossterm',
     'serde',
 ] }
