@@ -190,7 +190,7 @@ dependencies = [
 
 [[package]]
 name = "ristory"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "crossterm 0.23.2",
  "encoding_rs",

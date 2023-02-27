@@ -3,12 +3,10 @@ use crate::ui::ui;
 use crossterm::event::{self, Event, KeyCode};
 use itertools::Itertools;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::Read;
+use std::path::Path;
 use std::{env, io};
 use tui::{backend::Backend, widgets::ListState, Terminal};
-
-use encoding_rs::WINDOWS_1252;
-use encoding_rs_io::DecodeReaderBytesBuilder;
 
 pub enum InputMode {
     Normal,
@@ -35,19 +33,27 @@ impl Default for App {
     }
 }
 
+// Zsh uses a meta char (0x83) to signify that the previous character should be ^ 32.
+fn read_and_unmetafy(path: &Path) -> String {
+    let mut f = File::open(path).unwrap_or_else(|_| panic!("{:?} file not found", &path));
+    let mut buffer = Vec::new();
+    f.read_to_end(&mut buffer)
+        .unwrap_or_else(|_| panic!("unable to read from {:?}", &path));
+    for index in (0..buffer.len()).rev() {
+        if buffer[index] == 0x83 {
+            buffer.remove(index);
+            buffer[index] ^= 32;
+        }
+    }
+    String::from_utf8_lossy(&buffer).to_string()
+}
+
 // start run app
 pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Result<()> {
     let zsh_history_filename = env::var("HISTFILE").unwrap_or("/root/.zsh_history".to_string());
 
-    let history_file = File::open(zsh_history_filename)?;
-    let history: Vec<String> = BufReader::new(
-        DecodeReaderBytesBuilder::new()
-            .encoding(Some(WINDOWS_1252))
-            .build(history_file),
-    )
-    .lines()
-    .map(|h| h.unwrap())
-    .collect();
+    let history_content = read_and_unmetafy(Path::new(zsh_history_filename.as_str()));
+    let history: Vec<&str> = history_content.lines().collect();
 
     let mut history_state = ListState::default();
     history_state.select(Some(0));
