@@ -1,6 +1,7 @@
 use crate::ui::ui;
 
 use crossterm::event::{self, Event, KeyCode};
+use itertools::Itertools;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::{env, io};
@@ -73,6 +74,7 @@ pub fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> io::Res
                 let line_command = line_content.split(";").last().unwrap();
                 line_command
             })
+            .unique()
             .collect();
 
         terminal.draw(|f| ui(f, app, &hisroty_commands, &mut history_state))?;
