@@ -1,6 +1,6 @@
 [package]
 name = "ristory"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 authors = ["Lan4h <15997426361@sina.cn>"]
 description = "A tool for finding history zsh commands."
@@ -13,7 +13,7 @@ tui = { version = "0.19", default-features = false, features = [
     'crossterm',
     'serde',
 ] }
-crossterm = { version = "0.23", features = ["serde"] }
+crossterm = { version = "0.25", features = ["serde"] }
 encoding_rs = { version = "0.8.31" }
 encoding_rs_io = { version = "0.1.7" }
 itertools = { version = "0.9.0" }
